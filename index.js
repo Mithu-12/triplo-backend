@@ -6,6 +6,7 @@ import hotelsRoute from './routes/hotels.js';
 import usersRoute from './routes/users.js';
 import flightRoute from './routes/flight.js';
 import packageRoute from './routes/package.js';
+import visaRoute from './routes/visa.js';
 import bookSchedule from './routes/BookSchedule.js';
 import airportRoute from './routes/airport.js'
 import cookieParser from 'cookie-parser';
@@ -60,6 +61,7 @@ app.use('/api/hotels', hotelsRoute);
 app.use('/api/users', usersRoute);
 app.use('/api/flight', flightRoute);
 app.use('/api/package', packageRoute);
+app.use('/api/visa', visaRoute);
 app.use('/api/bookSchedule', bookSchedule);
 app.use('/api/airport', (req, res, next) => {
   res.setHeader('Access-Control-Allow-Origin', 'http://localhost:5173');
