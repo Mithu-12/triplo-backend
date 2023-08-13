@@ -1,36 +1,68 @@
+import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
-import bcrypt from 'bcryptjs'
-import { createError } from '../utils/error.js';
-import jwt from 'jsonwebtoken'
+import bcrypt from 'bcryptjs';
+import generateToken from '../utils/generateToken.js';
 
 export const register = async (req, res, next) => {
-  try {
-    const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(req.body.password, salt);
-    const newUser = new User({
-      userName: req.body.userName,
-      email: req.body.email,
-      password: hash,
-    });
-    await newUser.save();
-    res.status(200).send('user created has been successfully');
-  } catch (error) {
-    next(error);
-  }
+    try {
+        const { userName, email, password } = req.body;
+    
+        // Check if the username or email already exists in the database
+        const existingUser = await User.findOne({ $or: [{ userName }, { email }] });
+        if (existingUser) {
+          return res
+            .status(400)
+            .json({ message: 'Username or email already exists' });
+        }
+    
+        // Hash the password before saving it to the database
+        const salt = bcrypt.genSaltSync(10);
+        const hash = bcrypt.hashSync(password, salt);
+    
+        const newUser = new User({
+          userName,
+          email,
+          password: hash,
+        });
+        await newUser.save();
+    
+        // Generate a JWT token and send it as a response
+        const token = jwt.sign({ id: newUser._id }, process.env.JWT, {
+          expiresIn: '1d',
+        });
+        res.cookie('access_token', token, { httpOnly: true });
+        res.json({ access_token: token, user: newUser });
+      } catch (error) {
+        next(error);
+      }
 };
-export const login = async (req, res, next) => {
-  try {
-    const user = await User.findOne({userName : req.body.userName})
-    if(!user) return next(createError(404, "user not found"))
-    const isPasswordCorrect = bcrypt.compare(req.body.password, user.password);
-    if(!isPasswordCorrect) next(createError(401, 'User bad request'))
-    const token = jwt.sign({id: user._id, isAdmin: user.isAdmin}, process.env.JWT)
 
-    const {password, isAdmin, ...otherDetails} = user._doc
-    res.cookie("access_token", token, {
-        httpOnly: true
-    } ).status(200).json({...otherDetails})
-  } catch (error) {
-    next(error);
-  }
+export const login = async (req, res, next) => {
+    try {
+        const { identifier, password } = req.body;
+    
+        // Find the user based on email or username
+        const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(identifier);
+        const queryField = isEmail ? 'email' : 'userName';
+        const user = await User.findOne({ [queryField]: identifier });
+    
+        if (!user) {
+          return res
+            .status(401)
+            .json({ message: 'Invalid email or username or password' });
+        }
+    
+        // Check if the password is correct using bcrypt
+        const isPasswordCorrect = bcrypt.compareSync(password, user.password);
+        if (!isPasswordCorrect) {
+          return res
+            .status(401)
+            .json({ message: 'Invalid email or username or password' });
+        }
+        const token = generateToken(user._id)
+        res.cookie('access_token', token, { httpOnly: true });
+        res.json({ access_token: token, user });
+      } catch (error) {
+        next(error);
+      }
 };

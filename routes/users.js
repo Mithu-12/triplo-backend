@@ -23,12 +23,12 @@ TODO://this is check authentication user and admin
 // })
 
 //update
-router.put('/:id', verifyUser, updateUser);
+router.put('/:id', verifyToken, verifyUser, updateUser);
 //delete
-router.delete('/:id',verifyUser, deleteUser);
+router.delete('/:id',verifyToken, verifyUser, deleteUser);
 //getUser
-router.get('/:id',verifyUser, getUser);
+router.get('/:id', verifyToken, verifyUser, getUser);
 //getAllUser
-router.get('/', verifyAdmin, getAllUser);
+router.get('/',  getAllUser);
 
 export default router;
