@@ -50,7 +50,7 @@ router.put('/:id', verifyAdmin, updatePackage);
 router.delete('/:id', verifyAdmin, deletePackage);
 
 // Get a specific package route
-router.get('/:id',  getPackage,cacheMiddleware, cacheResponse);
+router.get('/:id', getPackage, cacheMiddleware, cacheResponse);
 
 // Get all packages route
 router.get('/', cacheMiddleware, getAllPackage, cacheResponse);
@@ -59,6 +59,3 @@ router.get('/', cacheMiddleware, getAllPackage, cacheResponse);
 router.get('/search-city', searchPackage);
 
 export default router;
-
-
-

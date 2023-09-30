@@ -27,12 +27,13 @@ passport.use(
             name: profile.displayName,
             email: profile.emails[0].value,
             picture: profile.photos[0].value,
+            userName: profile.emails[0].value,
           });
         }
 
         // Generate JWT token
-        const token = generateToken(user._id);
-        user.token = token;
+        // const token = generateToken(user._id);
+        // user.token = token;
 
         // Call done with null for the error and the user object
         return done(null, user);

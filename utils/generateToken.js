@@ -13,6 +13,7 @@ const generateToken = (userData) => {
 
   // Sign the token with your JWT secret
   const token = jwt.sign(payload, process.env.JWT, options);
+  console.log(token)
   return token;
 };
 

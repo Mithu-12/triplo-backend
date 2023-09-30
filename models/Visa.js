@@ -16,8 +16,8 @@ const VisaSchema = new Schema({
   govtJobHolder: [ { type: String, required: true }],
   visaList: [
         {
-          name: [{ type: String, required: true }],
-          price: [ { type: String, required: true }],
+          name: { type: String, required: true },
+          price:  { type: String, required: true },
           validity: { type: Number, required: true },
           stayPeriod: { type: Number, required: true },
         },
