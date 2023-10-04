@@ -15,10 +15,20 @@ const store_passwd = process.env.SSLCOMMERZ_SECRET_API_KEY;
 const is_live = false;
 
 router.post('/payment-process/:paymentOption', async (req, res) => {
-  const {paymentOption, price, email, address, firstName, paymentType, travelersData} = req.body;
-  console.log('product',travelersData);
+  const {
+    paymentOption,
+    price,
+    email,
+    firstName,
+    paymentType,
+    travelers,
+    travelersData,
+    productData,
+    serviceType,
+    userId,
+  } = req.body;
+
   try {
-   
     const data = {
       total_amount: price,
       currency: 'BDT',
@@ -33,7 +43,7 @@ router.post('/payment-process/:paymentOption', async (req, res) => {
       product_profile: 'general',
       cus_name: firstName,
       cus_email: email,
-      cus_add1: address,
+      cus_add1: 'hello',
       cus_add2: 'Dhaka',
       cus_city: 'Dhaka',
       cus_state: 'Dhaka',
@@ -59,7 +69,13 @@ router.post('/payment-process/:paymentOption', async (req, res) => {
         res.send({ url: GatewayPageURL });
         console.log('Redirecting to: ', GatewayPageURL);
         const finalOrder = new Payment({
-          product: travelersData,
+          productData: productData,
+          travelersData: req.body,
+          price: price,
+          travelers: travelers,
+          paymentType: paymentType,
+          serviceType: serviceType,
+          userId: userId,
           paymentStatus: false,
           tranId: tran_id,
         });
@@ -72,37 +88,51 @@ router.post('/payment-process/:paymentOption', async (req, res) => {
           },
           {
             $set: {
-              paymentStatus: true,
+              paymentStatus: 'success',
             },
           }
         );
         if (paymentUpdate.modifiedCount > 0) {
           res.redirect(
-            `http://localhost:5173/payment/success/${req.params.tranId}`
+            `http://localhost:5173/app/account/bookings/${serviceType}`
           );
         }
       });
       router.post('/failed/:tranId', async (req, res) => {
-        const payment = await Payment.deleteOne({
-          tranId: req.params.tranId,
-        });
-        if (payment.deletedCount) {
+        const paymentUpdate = await Payment.updateOne(
+          {
+            tranId: req.params.tranId,
+          },
+          {
+            $set: {
+              paymentStatus: 'failed',
+            },
+          }
+        );
+        if (paymentUpdate.modifiedCount > 0) {
           res.redirect(
-            `http://localhost:5173/payment/failed/${req.params.tranId}`
+            `http://localhost:5173/app/account/bookings/${serviceType}`
           );
         }
       });
       router.post('/cancel/:tranId', async (req, res) => {
-        const payment = await Payment.deleteOne({
-          tranId: req.params.tranId,
-        });
-        if (payment.deletedCount) {
+        const paymentUpdate = await Payment.updateOne(
+          {
+            tranId: req.params.tranId,
+          },
+          {
+            $set: {
+              paymentStatus: 'cancel',
+            },
+          }
+        );
+        if (paymentUpdate.modifiedCount > 0) {
           res.redirect(
-            `http://localhost:5173/payment/cancel/${req.params.tranId}`
+            `http://localhost:5173/app/account/bookings/${serviceType}`
           );
         }
       });
-    } catch {
+    } catch (error) {
       console.error('Error during SSLCommerzPayment initialization:', error);
       res
         .status(500)
@@ -116,18 +146,25 @@ router.post('/payment-process/:paymentOption', async (req, res) => {
   }
 });
 
+// Backend route to fetch payment data based on userId and serviceType
+router.get('/:userId/:serviceType', async (req, res) => {
+  const userId = req.params.userId;
+  const serviceType = req.params.serviceType;
+  console.log('userId, serviceType', userId, serviceType);
+  try {
+    // Fetch payment data for the specified userId and serviceType
+    const payments = await Payment.find({ userId, serviceType });
+    console.log('payments', payments);
+    res.json(payments);
+  } catch (error) {
+    console.error('Error fetching payment data:', error);
+    res
+      .status(500)
+      .json({ error: 'An error occurred while fetching payment data' });
+  }
+});
+
 export default router;
-
-
-
-
-
-
-
-
-
-
-
 
 // import express from 'express';
 // import { ObjectId } from 'mongodb';

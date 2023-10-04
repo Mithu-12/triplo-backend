@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { login, register } from '../controller/auth.js';
+import { changePassword, login, register } from '../controller/auth.js';
 import generateToken from '../utils/generateToken.js';
 const router = express.Router();
 const CLIENT_URL = 'http://localhost:5173';
@@ -9,6 +9,7 @@ const SUCCESS_URL = 'http://localhost:5173/login/success';
 router.post('/register', register);
 
 router.post('/login', login);
+router.post('/change-password', changePassword);
 
 // Local email/password login
 // router.post('/login', (req, res, next) => {
@@ -56,9 +57,9 @@ router.get('/login/failed', (req, res) => {
   });
 });
 
-router.post('/logout', function(req, res, next) {
+router.post('/logout', function (req, res, next) {
   // Call the req.logout() function with a callback function
-  req.logout(function(err) {
+  req.logout(function (err) {
     if (err) {
       // Handle error if logout fails
       console.error('Logout error:', err);
@@ -69,7 +70,6 @@ router.post('/logout', function(req, res, next) {
     res.redirect('/');
   });
 });
-
 
 router.get(
   '/google',

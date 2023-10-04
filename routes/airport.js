@@ -1,4 +1,3 @@
-
 import express from 'express';
 import { searchFlights } from '../controller/airport.js';
 
@@ -16,7 +15,7 @@ router.get('/search', async (req, res, next) => {
     const travelClass = req.query.travelClass;
     const children = req.query.children;
     const infants = req.query.infants;
-    const max = req.query.max
+    const max = req.query.max;
 
     const flights = await searchFlights({
       originLocationCode,
@@ -28,9 +27,8 @@ router.get('/search', async (req, res, next) => {
       travelClass,
       children,
       infants,
-      max
+      max,
       // ... other relevant parameters
-
     });
 
     console.log('amadeus data', flights);
@@ -42,12 +40,6 @@ router.get('/search', async (req, res, next) => {
 });
 
 export default router;
-
-
-
-
-
-
 
 // import express from 'express';
 // import { searchFlights } from '../controller/airport.js';
