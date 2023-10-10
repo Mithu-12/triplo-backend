@@ -2,6 +2,7 @@ import express from 'express';
 import passport from 'passport';
 import { changePassword, login, register } from '../controller/auth.js';
 import generateToken from '../utils/generateToken.js';
+import { verifyToken, verifyUser } from '../utils/verifyToken.js';
 const router = express.Router();
 const CLIENT_URL = 'http://localhost:5173';
 const SUCCESS_URL = 'http://localhost:5173/login/success';
@@ -9,7 +10,7 @@ const SUCCESS_URL = 'http://localhost:5173/login/success';
 router.post('/register', register);
 
 router.post('/login', login);
-router.post('/change-password', changePassword);
+router.post('/change-password', verifyToken, changePassword);
 
 // Local email/password login
 // router.post('/login', (req, res, next) => {

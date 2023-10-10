@@ -70,7 +70,7 @@ export const login = async (req, res, next) => {
 export const changePassword = async (req, res, next) => {
   try {
     const { currentPassword, newPassword, userId } = req.body;
-
+    console.log(userId)
     const user = await User.findById(userId);
 
     if (!bcrypt.compareSync(currentPassword, user.password)) {

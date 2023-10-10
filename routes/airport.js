@@ -1,11 +1,22 @@
 import express from 'express';
 import { searchFlights } from '../controller/airport.js';
+import { v4 as uuidv4 } from 'uuid'
+
 
 const router = express.Router();
+
+
 
 // export default router;
 router.get('/search', async (req, res, next) => {
   try {
+
+    const searchUid = uuidv4();
+    const itineraryUid = uuidv4();
+
+    // Store them in the user's session
+    req.session.searchUid = searchUid;
+    req.session.itineraryUid = itineraryUid;
     // Retrieve the parameters from the query string
     const originLocationCode = req.query.originLocationCode;
     const destinationLocationCode = req.query.destinationLocationCode;
@@ -23,12 +34,10 @@ router.get('/search', async (req, res, next) => {
       departureDate,
       returnDate,
       adults,
-
       travelClass,
       children,
       infants,
       max,
-      // ... other relevant parameters
     });
 
     console.log('amadeus data', flights);
@@ -43,26 +52,20 @@ export default router;
 
 // import express from 'express';
 // import { searchFlights } from '../controller/airport.js';
-// import NodeCache from 'node-cache';
+// import { v4 as uuidv4 } from 'uuid'
+
 
 // const router = express.Router();
 
-// const cache = new NodeCache();
-// // Flight search route
+
+
+// // export default router;
 // router.get('/search', async (req, res, next) => {
 //   try {
-//     const cacheKey =
-//       'flight-search:' + req.query.origin + req.query.destination;
 
-//     // Check if the data exists in the cache
-//     const cachedData = cache.get(cacheKey);
 
-//     if (cachedData) {
-//       console.log('its from cache');
-//       // Data found in cache, return the cached data
-//       res.json(cachedData);
-//     } else {
-//       const originLocationCode = req.query.originLocationCode;
+//     // Retrieve the parameters from the query string
+//     const originLocationCode = req.query.originLocationCode;
 //     const destinationLocationCode = req.query.destinationLocationCode;
 //     const departureDate = req.query.departureDate;
 //     const adults = req.query.adults;
@@ -70,31 +73,27 @@ export default router;
 //     const travelClass = req.query.travelClass;
 //     const children = req.query.children;
 //     const infants = req.query.infants;
-//     const max = req.query.max
-//       // Data not found in cache, fetch from the data source
-//       const flights = await searchFlights({
-//         originLocationCode,
-//         destinationLocationCode,
-//         departureDate,
-//         returnDate,
-//         adults,
-//         travelClass,
-//         children,
-//         infants,
-//         max,
-//       }); // Fetch flights data
+//     const max = req.query.max;
 
-//       // Store the fetched data in the cache with an expiration time of 1 hour (3600 seconds)
-//       cache.set(cacheKey, flights, 3600);
+//     const flights = await searchFlights({
+//       originLocationCode,
+//       destinationLocationCode,
+//       departureDate,
+//       returnDate,
+//       adults,
+//       travelClass,
+//       children,
+//       infants,
+//       max,
+//     });
 
-//       console.log('its from api');
-//       // Return the fetched data as the API response
-//       res.json(flights);
-//     }
+//     console.log('amadeus data', flights);
+//     res.json(flights);
 //   } catch (error) {
 //     console.error('An error occurred while searching flights:', error);
-//     next(error); // Pass the error to the next error handling middleware
+//     next(error);
 //   }
 // });
 
 // export default router;
+
