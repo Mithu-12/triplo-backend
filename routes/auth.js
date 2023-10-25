@@ -59,8 +59,6 @@ router.get('/google/callback', (req, res, next) => {
           throw loginErr; // Handle the login error
         }
         req.session.user = req.user;
-        const sessionUser = req.session.user;
-        console.log('session', sessionUser)
         console.log('user', req.session.user)
         // return res.redirect(SUCCESS_URL)
         return res.redirect(SUCCESS_URL);
