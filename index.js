@@ -39,7 +39,7 @@ app.use(
     secret: secretKey,
     resave: false,
     saveUninitialized: false,
-    cookie: { maxAge: 1000 * 60 * 20 },
+    cookie: { secure: false },
   })
 );
 
