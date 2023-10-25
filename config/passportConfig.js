@@ -3,7 +3,7 @@ import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { Strategy as FacebookStrategy } from 'passport-facebook';
 import User from '../models/User.js';
-import generateToken from '../utils/generateToken.js';
+
 
 
 passport.use(
@@ -16,6 +16,7 @@ passport.use(
       
     },
     async (req, accessToken, refreshToken, profile, done) => {
+      console.log('Google OAuth2 strategy called');
       try {
         // Check if the user already exists in database
         let user = await User.findOne({ googleId: profile.id });
@@ -30,11 +31,16 @@ passport.use(
             userName: profile.emails[0].value,
           });
         }
-
+        if (errorOccurred) {
+          console.error('Error occurred:', error);
+          return done(error, false);
+        }
+console.log('new',user)
         // Call done with null for the error and the user object
         return done(null, user);
       } catch (error) {
         // Call done with the error object and false for the user
+        console.log('new error', error)
         return done(error, false);
       }
     }
