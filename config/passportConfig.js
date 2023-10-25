@@ -52,7 +52,7 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_CLIENT_API_KEY,
       clientSecret: process.env.FACEBOOK_SECRET_API_KEY,
-      callbackURL: 'http://localhost:8080/api/auth/facebook/callback',
+      callbackURL: 'https://triplo.cyclic.app/api/auth/facebook/callback',
     },
     async (accessToken, refreshToken, profile, done) => {
       try {

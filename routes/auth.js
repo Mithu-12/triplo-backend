@@ -12,7 +12,7 @@ router.post('/register', register);
 router.post('/login', login);
 router.post('/change-password', verifyToken, changePassword);
 
-
+console.log(SUCCESS_URL)
 router.get('/login/success', (req, res) => {
   // Use the user data stored in the session
   const sessionUser = req.session.user;
@@ -98,6 +98,19 @@ router.get('/google/callback', (req, res, next) => {
   })(req, res, next);
 });
 
+router.get(
+  '/facebook',
+  passport.authenticate('facebook', { scope: ['email'] })
+);
+router.get(
+  '/facebook/callback',
+  passport.authenticate('facebook'),
+  (req, res) => {
+    const token = generateToken(req.user._id);
+    res.cookie('access_token', token, { httpOnly: true });
+    res.json({ user: req.user });
+  }
+);
 
 
 export default router;
