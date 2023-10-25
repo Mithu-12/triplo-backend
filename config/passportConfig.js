@@ -12,7 +12,7 @@ passport.use(
       // Google OAuth2 credentials
       clientID: process.env.GOOGLE_CLIENT_API_KEY,
       clientSecret: process.env.GOOGLE_SECRET_API_KEY,
-      callbackURL: 'https://triplo.cyclic.app/api/auth/google/callback',
+      callbackURL: 'http://localhost:8800/api/auth/google/callback',
       
     },
     async (req, accessToken, refreshToken, profile, done) => {
@@ -32,7 +32,7 @@ passport.use(
           });
         }
        
-console.log('new',user)
+
         // Call done with null for the error and the user object
         return done(null, user);
       } catch (error) {
