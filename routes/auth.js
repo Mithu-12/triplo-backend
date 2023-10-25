@@ -12,9 +12,6 @@ router.post('/register', register);
 router.post('/login', login);
 router.post('/change-password', verifyToken, changePassword);
 
-console.log(SUCCESS_URL)
-
-
 router.get('/login/failed', (req, res) => {
   res.status(401).json({
     success: false,
@@ -49,7 +46,7 @@ router.get('/google/callback', (req, res, next) => {
       }
 
       if (!user) {
-        
+        // Authentication failed
         return res.redirect('/failure');
       }
 
@@ -59,8 +56,6 @@ router.get('/google/callback', (req, res, next) => {
           throw loginErr; // Handle the login error
         }
         req.session.user = req.user;
-        console.log('user', req.session.user)
-        // return res.redirect(SUCCESS_URL)
         return res.redirect(SUCCESS_URL);
       });
      
