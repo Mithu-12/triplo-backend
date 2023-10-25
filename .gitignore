@@ -38,3 +38,4 @@ yarn.lock
 
 # Ignore Jest coverage report
 /coverage/
+.vercel

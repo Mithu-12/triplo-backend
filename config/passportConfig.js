@@ -12,7 +12,7 @@ passport.use(
       // Google OAuth2 credentials
       clientID: process.env.GOOGLE_CLIENT_API_KEY,
       clientSecret: process.env.GOOGLE_SECRET_API_KEY,
-      callbackURL: '/api/auth/google/callback',
+      callbackURL: 'https://triplo.cyclic.app/api/auth/google/callback',
       
     },
     async (req, accessToken, refreshToken, profile, done) => {
@@ -30,10 +30,6 @@ passport.use(
             userName: profile.emails[0].value,
           });
         }
-
-        // Generate JWT token
-        // const token = generateToken(user._id);
-        // user.token = token;
 
         // Call done with null for the error and the user object
         return done(null, user);

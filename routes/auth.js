@@ -12,18 +12,6 @@ router.post('/register', register);
 router.post('/login', login);
 router.post('/change-password', verifyToken, changePassword);
 
-// Local email/password login
-// router.post('/login', (req, res, next) => {
-//   passport.authenticate('local', (err, user) => {
-//     if (err) return next(err);
-//     if (!user) return res.status(401).json({ message: 'Invalid credentials' });
-
-//     // Generate JWT token and send it as a response
-//     const token = jwt.sign({ id: user._id }, process.env.JWT, { expiresIn: '1d' });
-//     res.cookie('access_token', token, { httpOnly: true });
-//     res.json({ user });
-//   })(req, res, next);
-// });
 
 router.get('/login/success', (req, res) => {
   // Use the user data stored in the session
@@ -107,23 +95,6 @@ router.get('/google/callback', (req, res, next) => {
   })(req, res, next);
 });
 
-// router.get(
-//   '/google/callback',
-//   passport.authenticate('google', {
-//     successRedirect: CLIENT_URL,
-//     failureRedirect: '/login',
-//   }),
-//   (req, res) => {
-//     // Generate JWT token and send it as a response
-//     req.session.user = req.user;
-//     // const token = jwt.sign({ id: req.user._id }, process.env.JWT, {
-//     //   expiresIn: '1d',
-//     // });
-//     // res.cookie('access_token', token, { httpOnly: true });
-//     // res.json({ 'access_token': token, user: req.user });
-//     // res.redirect('/');
-//   }
-// );
 
 router.get(
   '/facebook',
