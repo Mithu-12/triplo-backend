@@ -89,11 +89,18 @@ router.get(
 );
 
 
-router.get('/login/success', (req, res) => {
-  // Use the user data stored in the session
-  const sessionUser = req.session.user;
-  console.log('session', sessionUser)
-  if (sessionUser) {
+router.get('/login/success', async (req, res) => {
+  try {
+    // Use the user data stored in the session
+    const sessionUser = req.session.user;
+
+    if (!sessionUser) {
+      return res.status(401).json({
+        success: false,
+        message: 'Unauthorized',
+      });
+    }
+
     // Generate an access token (JWT)
     const token = generateToken(sessionUser._id);
 
@@ -105,16 +112,18 @@ router.get('/login/success', (req, res) => {
       success: true,
       message: 'success',
       access_token: token,
-      user: sessionUser, // Use the stored sessionUser
+      user: sessionUser,
     });
-  } else {
-    // If sessionUser is not available, send an error response
-    res.status(401).json({
+  } catch (error) {
+    // Handle any errors that occur during this process
+    console.error('Error:', error);
+    res.status(500).json({
       success: false,
-      message: 'Unauthorized',
+      message: 'Internal server error',
     });
   }
 });
+
 
 export default router;
 
