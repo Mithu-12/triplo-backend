@@ -86,9 +86,11 @@ router.get('/google/callback', (req, res, next) => {
         req.session.user = req.user;
         const sessionUser = req.session.user;
         console.log('session', sessionUser)
+        console.log('user'), req.session.user
         // return res.redirect(SUCCESS_URL)
         return res.redirect(SUCCESS_URL);
       });
+     
     } catch (error) {
       console.error('Error:', error);
       res
