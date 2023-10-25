@@ -31,10 +31,7 @@ passport.use(
             userName: profile.emails[0].value,
           });
         }
-        if (errorOccurred) {
-          console.error('Error occurred:', error);
-          return done(error, false);
-        }
+       
 console.log('new',user)
         // Call done with null for the error and the user object
         return done(null, user);
