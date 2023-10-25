@@ -24,7 +24,7 @@ dotenv.config();
 
 // Set up CORS middleware
 app.use(cors({
-  origin: 'http://localhost:5173',
+  origin: ['http://localhost:5173', 'https://triplo-flights.vercel.app'],
   methods: 'GET, POST, DELETE, PUT',
   credentials: true,
 }));
