@@ -13,32 +13,7 @@ router.post('/login', login);
 router.post('/change-password', verifyToken, changePassword);
 
 console.log(SUCCESS_URL)
-router.get('/login/success', (req, res) => {
-  // Use the user data stored in the session
-  const sessionUser = req.session.user;
-  console.log('session', sessionUser)
-  if (sessionUser) {
-    // Generate an access token (JWT)
-    const token = generateToken(sessionUser._id);
 
-    // Set the access token as a cookie
-    res.cookie('access_token', token, { httpOnly: true });
-
-    // Send the access token and user in the response
-    res.status(200).json({
-      success: true,
-      message: 'success',
-      access_token: token,
-      user: sessionUser, // Use the stored sessionUser
-    });
-  } else {
-    // If sessionUser is not available, send an error response
-    res.status(401).json({
-      success: false,
-      message: 'Unauthorized',
-    });
-  }
-});
 
 router.get('/login/failed', (req, res) => {
   res.status(401).json({
@@ -113,6 +88,33 @@ router.get(
   }
 );
 
+
+router.get('/login/success', (req, res) => {
+  // Use the user data stored in the session
+  const sessionUser = req.session.user;
+  console.log('session', sessionUser)
+  if (sessionUser) {
+    // Generate an access token (JWT)
+    const token = generateToken(sessionUser._id);
+
+    // Set the access token as a cookie
+    res.cookie('access_token', token, { httpOnly: true });
+
+    // Send the access token and user in the response
+    res.status(200).json({
+      success: true,
+      message: 'success',
+      access_token: token,
+      user: sessionUser, // Use the stored sessionUser
+    });
+  } else {
+    // If sessionUser is not available, send an error response
+    res.status(401).json({
+      success: false,
+      message: 'Unauthorized',
+    });
+  }
+});
 
 export default router;
 
