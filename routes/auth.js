@@ -49,7 +49,7 @@ router.get('/google/callback', (req, res, next) => {
       }
 
       if (!user) {
-        // Authentication failed
+        
         return res.redirect('/failure');
       }
 
