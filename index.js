@@ -34,15 +34,27 @@ app.use(express.json());
 
 // Set up session middleware
 const secretKey = crypto.randomBytes(32).toString('hex');
+// app.use(
+//   session({
+//     secret: secretKey,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: true },
+//   })
+// );
+
 app.use(
   session({
     secret: secretKey,
     resave: false,
-    saveUninitialized: false,
-    cookie: { secure: false },
+    saveUninitialized: true,
+    cookie: {
+      secure: true, // Set to true in production with HTTPS
+      httpOnly: true,
+      domain: 'triplo.cyclic.app', // Set to your backend domain
+    },
   })
 );
-
 // Set up body parser middleware
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));

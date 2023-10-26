@@ -7,13 +7,13 @@ import generateToken from '../utils/generateToken.js';
 import { verifyToken, verifyUser } from '../utils/verifyToken.js';
 const router = express.Router();
 const CLIENT_URL = 'http://localhost:5173';
-// const SUCCESS_URL = 'http://localhost:5173/login/success';
-const SUCCESS_URL = 'https://triplo-flights.vercel.app/login/success';
+const SUCCESS_URL = 'http://localhost:5173/login/success';
+// const SUCCESS_URL = 'https://triplo-flights.vercel.app/login/success';
 
 router.post('/register', register);
 
 router.post('/login', login);
-router.post('/change-password', verifyToken, changePassword);
+router.post('/change-password',  changePassword);
 
 
 router.get('/login/success', async (req, res) => {
