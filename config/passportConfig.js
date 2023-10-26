@@ -34,22 +34,28 @@ passport.use(
   )
 );
 
+// passport.serializeUser((user, done) => {
+//   done(null, user._id);
+// });
+
+// passport.deserializeUser(async (id, done) => {
+//   try {
+//     const user = await User.findById(id);
+//     done(null, user);
+//   } catch (error) {
+//     console.error('Error:', error);
+//     done(error, null);
+//   }
+// });
+
+
 passport.serializeUser((user, done) => {
-  done(null, user._id);
+  done(null, user);
 });
 
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await User.findById(id);
-    done(null, user);
-  } catch (error) {
-    console.error('Error:', error);
-    done(error, null);
-  }
+passport.deserializeUser((user, done) => {
+  done(null, user);
 });
-
-
-
 
 
 
