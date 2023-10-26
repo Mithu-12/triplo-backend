@@ -80,7 +80,7 @@ router.get(
 // Handle the callback from Google OAuth2
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
   // Redirect to your desired route upon successful authentication
-  res.redirect('/login/success');
+  res.redirect('api/auth/login/success');
 });
 
 router.get(
