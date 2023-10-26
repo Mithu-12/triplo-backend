@@ -46,33 +46,6 @@ passport.use(
 
 
 
-// Facebook OAuth2.0 strategy
-passport.use(
-  new FacebookStrategy(
-    {
-      clientID: process.env.FACEBOOK_CLIENT_API_KEY,
-      clientSecret: process.env.FACEBOOK_SECRET_API_KEY,
-      callbackURL: 'https://triplo.cyclic.app/api/auth/facebook/callback',
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        // Add logic to find or create user with Facebook profile information
-        const user = await User.findOne({ facebookId: profile.id });
-        if (!user) {
-          const newUser = new User({
-            facebookId: profile.id,
-            email: profile.emails[0].value,
-          });
-          await newUser.save();
-          return done(null, newUser);
-        }
-        return done(null, user);
-      } catch (error) {
-        return done(error);
-      }
-    }
-  )
-);
 
 // passport.serializeUser((user, done) => {
 //   done(null, user);
@@ -91,3 +64,42 @@ passport.deserializeUser((id, done) => {
     done(err, user);
   });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+// Facebook OAuth2.0 strategy
+// passport.use(
+//   new FacebookStrategy(
+//     {
+//       clientID: process.env.FACEBOOK_CLIENT_API_KEY,
+//       clientSecret: process.env.FACEBOOK_SECRET_API_KEY,
+//       callbackURL: 'https://triplo.cyclic.app/api/auth/facebook/callback',
+//     },
+//     async (accessToken, refreshToken, profile, done) => {
+//       try {
+//         // Add logic to find or create user with Facebook profile information
+//         const user = await User.findOne({ facebookId: profile.id });
+//         if (!user) {
+//           const newUser = new User({
+//             facebookId: profile.id,
+//             email: profile.emails[0].value,
+//           });
+//           await newUser.save();
+//           return done(null, newUser);
+//         }
+//         return done(null, user);
+//       } catch (error) {
+//         return done(error);
+//       }
+//     }
+//   )
+// );
