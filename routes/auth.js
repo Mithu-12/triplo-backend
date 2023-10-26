@@ -78,9 +78,11 @@ router.get(
 );
 
 // Handle the callback from Google OAuth2
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
+const basePath = '/api/auth';
+
+router.get(basePath + '/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
   // Redirect to your desired route upon successful authentication
-  res.redirect(SUCCESS_URL);
+  res.redirect('/login/success');
 });
 
 router.get(
