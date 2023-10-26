@@ -18,7 +18,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import crypto from 'crypto';
 import cors from 'cors';
-import helmet from 'helmet';
+
 
 const app = express();
 dotenv.config();
@@ -33,15 +33,7 @@ app.use(cors({
 // Set up middleware to enable JSON parsing
 app.use(express.json());
 
-app.use(
-  helmet.contentSecurityPolicy({
-    directives: {
-      defaultSrc: ["'self'"],
-      fontSrc: ["'self'", 'https://triplo.cyclic.app'],
-      // Add other directives as needed
-    },
-  })
-);
+
 // Set up session middleware
 const secretKey = crypto.randomBytes(32).toString('hex');
 app.use(
