@@ -78,26 +78,23 @@ router.get(
 );
 
 // Handle the callback from Google OAuth2
-const basePath = '/api/auth';
+router.get('/google/callback', passport.authenticate('google', { 
+  successRedirect: SUCCESS_URL,
+  failureRedirect: '/login/failed' }));
 
-router.get(basePath + '/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
-  // Redirect to your desired route upon successful authentication
-  res.redirect('/login/success');
-});
-
-router.get(
-  '/facebook',
-  passport.authenticate('facebook', { scope: ['email'] })
-);
-router.get(
-  '/facebook/callback',
-  passport.authenticate('facebook'),
-  (req, res) => {
-    const token = generateToken(req.user._id);
-    res.cookie('access_token', token, { httpOnly: true });
-    res.json({ user: req.user });
-  }
-);
+// router.get(
+//   '/facebook',
+//   passport.authenticate('facebook', { scope: ['email'] })
+// );
+// router.get(
+//   '/facebook/callback',
+//   passport.authenticate('facebook'),
+//   (req, res) => {
+//     const token = generateToken(req.user._id);
+//     res.cookie('access_token', token, { httpOnly: true });
+//     res.json({ user: req.user });
+//   }
+// );
 
 export default router;
 
