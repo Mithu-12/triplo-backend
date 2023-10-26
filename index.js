@@ -50,8 +50,8 @@ app.use(
     saveUninitialized: true,
     cookie: {
       secure: true, // Set to true in production with HTTPS
-      httpOnly: true
-      // domain: 'triplo.cyclic.app', // Set to your backend domain
+      httpOnly: true,
+      domain: 'triplo.cyclic.app', // Set to your backend domain
     },
   })
 );

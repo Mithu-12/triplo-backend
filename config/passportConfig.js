@@ -47,23 +47,25 @@ passport.use(
 
 
 
-// passport.serializeUser((user, done) => {
-//   done(null, user);
-// });
-
-// passport.deserializeUser((user, done) => {
-//   done(null, user);
-// });
 passport.serializeUser((user, done) => {
-  done(null, user.id); // Store user id in the session
+  done(null, user);
 });
 
-passport.deserializeUser((id, done) => {
-  // Retrieve user from the id stored in the session
-  User.findById(id, (err, user) => {
-    done(err, user);
-  });
+passport.deserializeUser((user, done) => {
+  done(null, user);
 });
+
+
+// passport.serializeUser((user, done) => {
+//   done(null, user.id); // Store user id in the session
+// });
+
+// passport.deserializeUser((id, done) => {
+//   // Retrieve user from the id stored in the session
+//   User.findById(id, (err, user) => {
+//     done(err, user);
+//   });
+// });
 
 
 
