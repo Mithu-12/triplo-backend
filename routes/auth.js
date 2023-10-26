@@ -72,8 +72,10 @@ router.post('/logout', function (req, res, next) {
   });
 });
 
-// Initialize the Google OAuth2 authentication process
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+router.get(
+  '/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
 
 // Handle the callback from Google OAuth2
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }), (req, res) => {
