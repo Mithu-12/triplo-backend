@@ -11,7 +11,7 @@ passport.use(
       // Google OAuth2 credentials
       clientID: process.env.GOOGLE_CLIENT_API_KEY,
       clientSecret: process.env.GOOGLE_SECRET_API_KEY,
-      callbackURL: 'https://triplo.cyclic.app/api/auth/google/callback',
+      callbackURL: 'https://triplo-flight.onrender.com/api/auth/google/callback',
       
     },
     async (req, accessToken, refreshToken, profile, done) => {
@@ -49,7 +49,7 @@ passport.use(
     {
       clientID: process.env.FACEBOOK_CLIENT_API_KEY,
       clientSecret: process.env.FACEBOOK_SECRET_API_KEY,
-      callbackURL: 'https://triplo.cyclic.app/api/auth/facebook/callback',
+      callbackURL: 'https://triplo-flight.onrender.com/api/auth/facebook/callback',
     },
     async (accessToken, refreshToken, profile, done) => {
       try {
