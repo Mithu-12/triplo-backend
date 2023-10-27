@@ -87,15 +87,18 @@ router.get('/google/callback', (req, res, next) => {
         return res.redirect('/failure');
       }
 
-      // Authentication succeeded, now store the user in session
+      // Authentication succeeded, now store the user in the session
       req.login(user, async (loginErr) => {
         if (loginErr) {
           throw loginErr; // Handle the login error
         }
-        req.session.user = req.user;
+
+        // You can also store the user data in the session
+        req.session.user = user; // This will make the user data available in the session
         const sessionUser = req.session.user;
-        console.log('session', sessionUser)
-        // return res.redirect(SUCCESS_URL)
+        console.log('User data in session:', sessionUser);
+
+        // Redirect to a success URL or send a response
         return res.redirect(SUCCESS_URL);
       });
     } catch (error) {
