@@ -18,6 +18,7 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import crypto from 'crypto';
 import cors from 'cors';
+import { MongoDBStore } from 'connect-mongodb-session';
 
 
 const app = express();
@@ -36,14 +37,14 @@ app.use(express.json());
 
 // Set up session middleware
 const secretKey = crypto.randomBytes(32).toString('hex');
-app.use(
-  session({
-    secret: secretKey,
-    resave: false,
-    saveUninitialized: true,
-    cookie: { secure: true }
-  })
-);
+// app.use(
+//   session({
+//     secret: secretKey,
+//     resave: false,
+//     saveUninitialized: true,
+//     cookie: { secure: true }
+//   })
+// );
 
 
 // Set up body parser middleware
@@ -72,6 +73,32 @@ mongoose.connection.on('disconnected', () => {
 mongoose.connection.on('connected', () => {
   console.log('MongoDB connected');
 });
+
+const store = new MongoDBStore({
+  uri: process.env.MONGODB, // Your MongoDB connection string
+  collection: 'sessions', // Collection name for sessions
+});
+
+// Catch errors in the MongoDB session store
+store.on('error', function (error) {
+  console.error('MongoDB session store error:', error);
+});
+
+// Set up session middleware with MongoDB session store
+app.use(
+  session({
+    secret: secretKey,
+    resave: false,
+    saveUninitialized: true,
+    store: store, // Use the MongoDB session store
+    cookie: {
+      secure: true,
+      maxAge: 1000 * 60 * 20, // 20 minutes (adjust as needed)
+    },
+  })
+);
+
+
 
 // Session timeout middleware
 const sessionTimeOut = 20 * 60 * 1000; // 20 minutes
