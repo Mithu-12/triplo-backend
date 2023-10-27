@@ -18,7 +18,8 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import crypto from 'crypto';
 import cors from 'cors';
-import { MongoDBStore } from 'connect-mongodb-session';
+import connectMongo from 'connect-mongodb-session';
+const MongoDBStore = connectMongo(session);
 
 
 const app = express();
