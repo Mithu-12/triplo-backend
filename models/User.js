@@ -21,12 +21,6 @@ const userSchema = new Schema({
       ref: 'Traveler',
     },
   ],
-  // travelers: [
-  //   {
-  //     type: Schema.Types.ObjectId,
-  //     ref: 'Traveler',
-  //   },
-  // ],
 },
 {timestamps: true});
 

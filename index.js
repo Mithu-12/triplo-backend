@@ -41,7 +41,7 @@ app.use(
     secret: secretKey,
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: true },
+    cookie: { secure: true }
   })
 );
 
