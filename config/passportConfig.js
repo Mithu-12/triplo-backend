@@ -1,6 +1,6 @@
 import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
-import { Strategy as FacebookStrategy } from 'passport-facebook';
+// import { Strategy as FacebookStrategy } from 'passport-facebook';
 import User from '../models/User.js';
 
 
@@ -44,32 +44,32 @@ passport.use(
 );
 
 // Facebook OAuth2.0 strategy
-passport.use(
-  new FacebookStrategy(
-    {
-      clientID: process.env.FACEBOOK_CLIENT_API_KEY,
-      clientSecret: process.env.FACEBOOK_SECRET_API_KEY,
-      callbackURL: 'https://triplo-flight.onrender.com/api/auth/facebook/callback',
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      try {
-        // Add logic to find or create user with Facebook profile information
-        const user = await User.findOne({ facebookId: profile.id });
-        if (!user) {
-          const newUser = new User({
-            facebookId: profile.id,
-            email: profile.emails[0].value,
-          });
-          await newUser.save();
-          return done(null, newUser);
-        }
-        return done(null, user);
-      } catch (error) {
-        return done(error);
-      }
-    }
-  )
-);
+// passport.use(
+//   new FacebookStrategy(
+//     {
+//       clientID: process.env.FACEBOOK_CLIENT_API_KEY,
+//       clientSecret: process.env.FACEBOOK_SECRET_API_KEY,
+//       callbackURL: 'https://triplo-flight.onrender.com/api/auth/facebook/callback',
+//     },
+//     async (accessToken, refreshToken, profile, done) => {
+//       try {
+//         // Add logic to find or create user with Facebook profile information
+//         const user = await User.findOne({ facebookId: profile.id });
+//         if (!user) {
+//           const newUser = new User({
+//             facebookId: profile.id,
+//             email: profile.emails[0].value,
+//           });
+//           await newUser.save();
+//           return done(null, newUser);
+//         }
+//         return done(null, user);
+//       } catch (error) {
+//         return done(error);
+//       }
+//     }
+//   )
+// );
 
 
 
