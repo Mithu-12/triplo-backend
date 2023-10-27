@@ -94,7 +94,7 @@ router.post('/payment-process/:paymentOption', async (req, res) => {
         );
         if (paymentUpdate.modifiedCount > 0) {
           res.redirect(
-            `http://localhost:5173/app/account/bookings/${serviceType}`
+            `https://triplo-flights.vercel.app/app/account/bookings/${serviceType}`
           );
         }
       });
@@ -111,7 +111,7 @@ router.post('/payment-process/:paymentOption', async (req, res) => {
         );
         if (paymentUpdate.modifiedCount > 0) {
           res.redirect(
-            `http://localhost:5173/app/account/bookings/${serviceType}`
+            `https://triplo-flights.vercel.app/app/account/bookings/${serviceType}`
           );
         }
       });
@@ -128,7 +128,7 @@ router.post('/payment-process/:paymentOption', async (req, res) => {
         );
         if (paymentUpdate.modifiedCount > 0) {
           res.redirect(
-            `http://localhost:5173/app/account/bookings/${serviceType}`
+            `https://triplo-flights.vercel.app/app/account/bookings/${serviceType}`
           );
         }
       });
