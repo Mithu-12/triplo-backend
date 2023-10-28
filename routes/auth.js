@@ -2,12 +2,58 @@ import express from 'express';
 import passport from 'passport';
 import { changePassword, login, register } from '../controller/auth.js';
 import generateToken from '../utils/generateToken.js';
+import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import { verifyToken, verifyUser } from '../utils/verifyToken.js';
 import User from '../models/User.js';
 const router = express.Router();
 const CLIENT_URL = 'http://localhost:5173';
 const SUCCESS_URL = 'http://localhost:5173/login/success';
 // const SUCCESS_URL = 'https://triplo-flights.vercel.app/login/success';
+
+
+
+
+
+
+
+
+passport.use(
+  new GoogleStrategy(
+    {
+      // Google OAuth2 credentials
+      clientID: process.env.GOOGLE_CLIENT_API_KEY,
+      clientSecret: process.env.GOOGLE_SECRET_API_KEY,
+      callbackURL: 'https://triplo-flight.onrender.com/api/auth/google/callback',
+      
+    },
+    async (req, accessToken, refreshToken, profile, done) => {
+      console.log('Google OAuth2 strategy called');
+      try {
+        // Check if the user already exists in database
+        let user = await User.findOne({ googleId: profile.id });
+        // console.log(profile);
+        if (!user) {
+          // Create a new user if not found
+          user = await User.create({
+            googleId: profile.id,
+            name: profile.displayName,
+            email: profile.emails[0].value,
+            picture: profile.photos[0].value,
+            userName: profile.emails[0].value,
+          });
+        }
+       
+
+        // Call done with null for the error and the user object
+        return done(null, user);
+      } catch (error) {
+        // Call done with the error object and false for the user
+        console.log('new error', error)
+        return done(error, false);
+      }
+    }
+  )
+);
 
 router.post('/register', register);
 
@@ -127,7 +173,7 @@ router.get(
 router.get('/login/success', async (req, res) => {
   try {
     // After the user is authenticated (e.g., via Passport), store user data in the session
-    const user = req.user; // Assuming Passport has stored the user in req.user
+    const user =  req.user; // Assuming Passport has stored the user in req.user
 console.log('firstUser', user)
     if (!user) {
       return res.status(401).json({
