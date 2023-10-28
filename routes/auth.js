@@ -56,6 +56,18 @@ passport.use(
   )
 );
 
+
+passport.serializeUser(function (user, done) {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
+
+
+
 router.post('/register', register);
 
 router.post('/login', login);
