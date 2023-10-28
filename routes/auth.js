@@ -1,4 +1,5 @@
 import express from 'express';
+import dotenv from 'dotenv';
 import passport from 'passport';
 import { changePassword, login, register } from '../controller/auth.js';
 import generateToken from '../utils/generateToken.js';
@@ -11,7 +12,7 @@ const SUCCESS_URL = 'http://localhost:5173/login/success';
 // const SUCCESS_URL = 'https://triplo-flights.vercel.app/login/success';
 
 
-
+dotenv.config();
 
 
 
@@ -61,40 +62,6 @@ router.post('/login', login);
 router.post('/change-password',  changePassword);
 
 
-// router.get('/login/success', async (req, res) => {
-//   try {
-//     // Use the user data stored in the session
-//     const sessionUser = await req.session;
-// console.log('userEmail', sessionUser)
-//     // if (!sessionUser) {
-//     //   return res.status(401).json({
-//     //     success: false,
-//     //     message: 'Unauthorized',
-//     //   });
-//     // }
-
-//     // Generate an access token (JWT)
-//     const token = generateToken(sessionUser._id);
-
-//     // Set the access token as a cookie
-//     res.cookie('access_token', token, { httpOnly: true });
-
-//     // Send the access token and user in the response
-//     res.status(200).json({
-//       success: true,
-//       message: 'success',
-//       access_token: token,
-//       user: sessionUser,
-//     });
-//   } catch (error) {
-//     // Handle any errors that occur during this process
-//     console.error('Error:', error);
-//     res.status(500).json({
-//       success: false,
-//       message: 'Internal server error',
-//     });
-//   }
-// });
 
 
 router.get('/failure', (req, res) => {
@@ -113,7 +80,6 @@ router.post('/logout', function (req, res, next) {
       return res.status(500).json({ message: 'Logout failed' });
     }
 
-    // Redirect to the desired route after successful logout
     res.redirect('/');
   });
 });
@@ -223,22 +189,6 @@ passport.deserializeUser((user, done) => {
 });
 
 
-
-
-
-// router.get(
-//   '/facebook',
-//   passport.authenticate('facebook', { scope: ['email'] })
-// );
-// router.get(
-//   '/facebook/callback',
-//   passport.authenticate('facebook'),
-//   (req, res) => {
-//     const token = generateToken(req.user._id);
-//     res.cookie('access_token', token, { httpOnly: true });
-//     res.json({ user: req.user });
-//   }
-// );
 
 export default router;
 
