@@ -109,6 +109,55 @@ passport.deserializeUser((user, done) => {
 
 
 
+app.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    successRedirect: '/login/success',
+    failureRedirect: '/login/failed',
+  })
+);
+
+
+
+app.get('/login/success', async (req, res) => {
+  try {
+    // After the user is authenticated (e.g., via Passport), store user data in the session
+    const user =  req.user; // Assuming Passport has stored the user in req.user
+console.log('firstUser', user)
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Unauthorized',
+      });
+    }
+
+    // Store the user data in the session
+    req.session.user = user;
+console.log('sessionUser', req.session.user)
+    // Generate an access token (JWT)
+    const token = generateToken(user._id);
+
+    // Set the access token as a cookie
+    res.cookie('access_token', token, { httpOnly: true });
+
+    // Send the access token and user in the response
+    res.status(200).json({
+      success: true,
+      message: 'success',
+      access_token: token,
+      user,
+    });
+  } catch (error) {
+    // Handle any errors that occur during this process
+    console.error('Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
+  }
+});
+
+
 
 
 
