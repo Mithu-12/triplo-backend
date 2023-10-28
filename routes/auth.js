@@ -169,14 +169,11 @@ console.log('sessionUser', req.session.user)
 
 
 passport.serializeUser(function (user, done) {
-  done(null, user.id);
+  done(null, user);
 });
 
-passport.deserializeUser(function (id, done) {
-  // Find the user by ID and call done(null, user) if found
-  User.findById(id, function (err, user) {
-    done(err, user);
-  });
+passport.deserializeUser((user, done) => {
+  done(null, user);
 });
 
 
