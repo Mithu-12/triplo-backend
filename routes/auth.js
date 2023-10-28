@@ -116,10 +116,12 @@ router.get(
 router.get(
   '/google/callback',
   passport.authenticate('google', {
-    successRedirect: '/login/success',
+    successRedirect: 'api/auth/login/success',
     failureRedirect: '/login/failed',
   })
 );
+
+
 
 router.get('/login/success', async (req, res) => {
   try {
