@@ -3,6 +3,7 @@ import passport from 'passport';
 import { changePassword, login, register } from '../controller/auth.js';
 import generateToken from '../utils/generateToken.js';
 import { verifyToken, verifyUser } from '../utils/verifyToken.js';
+import User from '../models/User.js';
 const router = express.Router();
 const CLIENT_URL = 'http://localhost:5173';
 const SUCCESS_URL = 'http://localhost:5173/login/success';
@@ -167,6 +168,16 @@ console.log('sessionUser', req.session.user)
 
 
 
+passport.serializeUser(function (user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+  // Find the user by ID and call done(null, user) if found
+  User.findById(id, function (err, user) {
+    done(err, user);
+  });
+});
 
 
 
