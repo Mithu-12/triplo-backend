@@ -95,11 +95,12 @@ router.get('/google/callback', (req, res, next) => {
 
         // You can also store the user data in the session
         req.session.user = user; // This will make the user data available in the session
-        const sessionUser = req.session.user;
-        console.log('User data in session:', sessionUser);
+        if(req.session.user){
+
+          return res.redirect(SUCCESS_URL);
+        }
 
         // Redirect to a success URL or send a response
-        return res.redirect(SUCCESS_URL);
       });
     } catch (error) {
       console.error('Error:', error);
