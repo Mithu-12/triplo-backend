@@ -17,7 +17,7 @@ router.post('/change-password',  changePassword);
 router.get('/login/success', async (req, res) => {
   try {
     // Use the user data stored in the session
-    const sessionUser = await req.session.user;
+    const sessionUser = await req.user;
 console.log('user', sessionUser)
     // if (!sessionUser) {
     //   return res.status(401).json({
