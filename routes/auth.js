@@ -49,7 +49,7 @@ console.log('user', sessionUser)
   }
 });
 
-router.get('/login/failed', (req, res) => {
+router.get('/failure', (req, res) => {
   res.status(401).json({
     success: false,
     message: 'failure',
@@ -86,7 +86,7 @@ router.get('/google/callback', (req, res, next) => {
         // Authentication failed
         return res.redirect('/failure');
       }
-
+console.log('userId', user)
       // Authentication succeeded, now store the user in the session
       req.login(user, async (loginErr) => {
         if (loginErr) {
