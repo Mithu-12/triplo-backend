@@ -18,8 +18,6 @@ import session from 'express-session';
 import cookieParser from 'cookie-parser';
 import crypto from 'crypto';
 import cors from 'cors';
-import User from './models/User.js';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 
 
 
@@ -57,119 +55,6 @@ app.use(cookieParser());
 // Initialize and configure Passport for authentication
 app.use(passport.initialize());
 app.use(passport.session());
-
-
-
-passport.use(
-  new GoogleStrategy(
-    {
-      // Google OAuth2 credentials
-      clientID: process.env.GOOGLE_CLIENT_API_KEY,
-      clientSecret: process.env.GOOGLE_SECRET_API_KEY,
-      callbackURL: 'https://triplo-flight.onrender.com/api/auth/google/callback',
-      
-    },
-    async (req, accessToken, refreshToken, profile, done) => {
-      console.log('Google OAuth2 strategy called');
-      try {
-        // Check if the user already exists in database
-        let user = await User.findOne({ googleId: profile.id });
-        // console.log(profile);
-        if (!user) {
-          // Create a new user if not found
-          user = await User.create({
-            googleId: profile.id,
-            name: profile.displayName,
-            email: profile.emails[0].value,
-            picture: profile.photos[0].value,
-            userName: profile.emails[0].value,
-          });
-        }
-       
-
-        // Call done with null for the error and the user object
-        return done(null, user);
-      } catch (error) {
-        // Call done with the error object and false for the user
-        console.log('new error', error)
-        return done(error, false);
-      }
-    }
-  )
-);
-
-
-passport.serializeUser(function (user, done) {
-  done(null, user);
-});
-
-passport.deserializeUser((user, done) => {
-  done(null, user);
-});
-
-
-app.get(
-  '/google',
-  passport.authenticate('google', { scope: ['profile', 'email'] })
-);
-app.get(
-  '/google/callback',
-  passport.authenticate('google', {
-    successRedirect: '/login/success',
-    failureRedirect: '/login/failed',
-  })
-);
-
-
-
-app.get('/login/success', async (req, res) => {
-  try {
-    // After the user is authenticated (e.g., via Passport), store user data in the session
-    const user =  req.user; // Assuming Passport has stored the user in req.user
-console.log('firstUser', user)
-    if (!user) {
-      return res.status(401).json({
-        success: false,
-        message: 'Unauthorized',
-      });
-    }
-
-    // Store the user data in the session
-    req.session.user = user;
-console.log('sessionUser', req.session.user)
-    // Generate an access token (JWT)
-    const token = generateToken(user._id);
-
-    // Set the access token as a cookie
-    res.cookie('access_token', token, { httpOnly: true });
-
-    // Send the access token and user in the response
-    res.status(200).json({
-      success: true,
-      message: 'success',
-      access_token: token,
-      user,
-    });
-  } catch (error) {
-    // Handle any errors that occur during this process
-    console.error('Error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-    });
-  }
-});
-
-
-
-
-
-
-
-
-
-
-
 
 // Logging for MongoDB connection
 const connect = async () => {
