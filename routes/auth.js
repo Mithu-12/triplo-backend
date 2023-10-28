@@ -19,12 +19,12 @@ router.get('/login/success', async (req, res) => {
     // Use the user data stored in the session
     const sessionUser = await req.session.user;
 console.log('user', sessionUser)
-    if (!sessionUser) {
-      return res.status(401).json({
-        success: false,
-        message: 'Unauthorized',
-      });
-    }
+    // if (!sessionUser) {
+    //   return res.status(401).json({
+    //     success: false,
+    //     message: 'Unauthorized',
+    //   });
+    // }
 
     // Generate an access token (JWT)
     const token = generateToken(sessionUser._id);
