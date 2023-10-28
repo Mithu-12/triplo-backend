@@ -76,49 +76,56 @@ router.get(
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-router.get('/google/callback', (req, res, next) => {
-  passport.authenticate('google', async (err, user, info) => {
-    try {
-      if (err) {
-        throw err; // Handle the error
-      }
+// router.get('/google/callback', (req, res, next) => {
+//   passport.authenticate('google', async (err, user, info) => {
+//     try {
+//       if (err) {
+//         throw err; // Handle the error
+//       }
 
-      if (!user) {
-        // Authentication failed
-        return res.redirect('/failure');
-      }
-console.log('userId', user)
-      // Authentication succeeded, now store the user in the session
-      req.login(user, async (loginErr) => {
-        if (loginErr) {
-          throw loginErr; // Handle the login error
-        }
+//       if (!user) {
+//         // Authentication failed
+//         return res.redirect('/failure');
+//       }
+// console.log('userId', user)
+//       // Authentication succeeded, now store the user in the session
+//       req.login(user, async (loginErr) => {
+//         if (loginErr) {
+//           throw loginErr; // Handle the login error
+//         }
 
-        // You can also store the user data in the session
-        req.session.user = user; 
-        console.log('user',req.session.user)
-        if(req.session.user){
+//         // You can also store the user data in the session
+//         req.session.user = user; 
+//         console.log('user',req.session.user)
+//         if(req.session.user){
 
-          return res.redirect(SUCCESS_URL);
-        }
+//           return res.redirect(SUCCESS_URL);
+//         }
 
-        // Redirect to a success URL or send a response
-      });
-    } catch (error) {
-      console.error('Error:', error);
-      res
-        .status(500)
-        .json({ success: false, message: 'Internal server error' });
-    }
-  })(req, res, next);
-});
+//         // Redirect to a success URL or send a response
+//       });
+//     } catch (error) {
+//       console.error('Error:', error);
+//       res
+//         .status(500)
+//         .json({ success: false, message: 'Internal server error' });
+//     }
+//   })(req, res, next);
+// });
 
+router.get(
+  '/google/callback',
+  passport.authenticate('google', {
+    successRedirect: '/login/success',
+    failureRedirect: '/login/failed',
+  })
+);
 
 router.get('/login/success', async (req, res) => {
   try {
     // After the user is authenticated (e.g., via Passport), store user data in the session
     const user = req.user; // Assuming Passport has stored the user in req.user
-
+console.log('firstUser', user)
     if (!user) {
       return res.status(401).json({
         success: false,
@@ -128,7 +135,7 @@ router.get('/login/success', async (req, res) => {
 
     // Store the user data in the session
     req.session.user = user;
-
+console.log('sessionUser', req.session.user)
     // Generate an access token (JWT)
     const token = generateToken(user._id);
 
