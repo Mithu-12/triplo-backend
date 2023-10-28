@@ -14,40 +14,41 @@ router.post('/login', login);
 router.post('/change-password',  changePassword);
 
 
-router.get('/login/success', async (req, res) => {
-  try {
-    // Use the user data stored in the session
-    const sessionUser = await req.session;
-console.log('userEmail', sessionUser)
-    // if (!sessionUser) {
-    //   return res.status(401).json({
-    //     success: false,
-    //     message: 'Unauthorized',
-    //   });
-    // }
+// router.get('/login/success', async (req, res) => {
+//   try {
+//     // Use the user data stored in the session
+//     const sessionUser = await req.session;
+// console.log('userEmail', sessionUser)
+//     // if (!sessionUser) {
+//     //   return res.status(401).json({
+//     //     success: false,
+//     //     message: 'Unauthorized',
+//     //   });
+//     // }
 
-    // Generate an access token (JWT)
-    const token = generateToken(sessionUser._id);
+//     // Generate an access token (JWT)
+//     const token = generateToken(sessionUser._id);
 
-    // Set the access token as a cookie
-    res.cookie('access_token', token, { httpOnly: true });
+//     // Set the access token as a cookie
+//     res.cookie('access_token', token, { httpOnly: true });
 
-    // Send the access token and user in the response
-    res.status(200).json({
-      success: true,
-      message: 'success',
-      access_token: token,
-      user: sessionUser,
-    });
-  } catch (error) {
-    // Handle any errors that occur during this process
-    console.error('Error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-    });
-  }
-});
+//     // Send the access token and user in the response
+//     res.status(200).json({
+//       success: true,
+//       message: 'success',
+//       access_token: token,
+//       user: sessionUser,
+//     });
+//   } catch (error) {
+//     // Handle any errors that occur during this process
+//     console.error('Error:', error);
+//     res.status(500).json({
+//       success: false,
+//       message: 'Internal server error',
+//     });
+//   }
+// });
+
 
 router.get('/failure', (req, res) => {
   res.status(401).json({
@@ -111,6 +112,55 @@ console.log('userId', user)
     }
   })(req, res, next);
 });
+
+
+router.get('/login/success', async (req, res) => {
+  try {
+    // After the user is authenticated (e.g., via Passport), store user data in the session
+    const user = req.user; // Assuming Passport has stored the user in req.user
+
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Unauthorized',
+      });
+    }
+
+    // Store the user data in the session
+    req.session.user = user;
+
+    // Generate an access token (JWT)
+    const token = generateToken(user._id);
+
+    // Set the access token as a cookie
+    res.cookie('access_token', token, { httpOnly: true });
+
+    // Send the access token and user in the response
+    res.status(200).json({
+      success: true,
+      message: 'success',
+      access_token: token,
+      user,
+    });
+  } catch (error) {
+    // Handle any errors that occur during this process
+    console.error('Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
+  }
+});
+
+
+
+
+
+
+
+
+
+
 
 
 // router.get(
