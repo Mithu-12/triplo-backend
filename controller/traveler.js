@@ -4,18 +4,15 @@ import User from '../models/User.js';
 export const addTravelers = async (req, res, next) => {
   try {
     const { userId, travelerId } = req.body;
-
-    // Check if a traveler with the given travelerId exists in the database
     const existingTraveler = await Traveler.findOne({ travelerId });
 
     if (existingTraveler) {
-      // Traveler with the given travelerId already exists, update the existing traveler
       const updateTraveler = await Traveler.findOneAndUpdate(
         { travelerId },
         req.body,
         { new: true }
       );
-      res.json({success: true, message: 'Traveler Updated Successfully', updateTraveler});
+      res.json({success: true, message: 'Traveler Updated Successfully', traveler: updateTraveler});
     } else {
       // Traveler with the given travelerId does not exist, create a new traveler
       const newTraveler = new Traveler({ ...req.body, travelerId });
@@ -26,7 +23,7 @@ export const addTravelers = async (req, res, next) => {
         $push: { travelers: newTraveler.travelerId },
       });
       
-      res.status(201).json({success: true, message: 'Traveler Successfully Created', newTraveler});
+      res.status(201).json({success: true, message: 'Traveler Successfully Created', traveler: newTraveler});
     }
   } catch (error) {
     console.log(error);
