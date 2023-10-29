@@ -11,7 +11,6 @@ import bookSchedule from './routes/BookSchedule.js';
 import airportRoute from './routes/airport.js';
 import paymentRoute from './routes/payment.js';
 import travelerRoute from './routes/traveler.js';
-import bodyParser from 'body-parser';
 import passport from 'passport';
 import './config/passportConfig.js';
 import session from 'express-session';
@@ -47,9 +46,6 @@ app.use(
 );
 
 
-// Set up body parser middleware
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Initialize and configure Passport for authentication
