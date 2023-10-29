@@ -7,7 +7,11 @@ export const updateUser = async (req, res, next) => {
       { $set: req.body },
       { new: true }
     );
-    res.status(200).json(updateUser);
+    res.status(200).json({
+      success: true,
+      message: 'User updated successfully',
+      data: updateUser,
+    });;
   } catch (error) {
     next(error);
   }
