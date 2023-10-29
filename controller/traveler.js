@@ -15,7 +15,7 @@ export const addTravelers = async (req, res, next) => {
         req.body,
         { new: true }
       );
-      res.json(updateTraveler);
+      res.json({success: true, message: 'Traveler Updated Successfully', updateTraveler});
     } else {
       // Traveler with the given travelerId does not exist, create a new traveler
       const newTraveler = new Traveler({ ...req.body, travelerId });
@@ -25,28 +25,15 @@ export const addTravelers = async (req, res, next) => {
       await User.findByIdAndUpdate(userId, {
         $push: { travelers: newTraveler.travelerId },
       });
-
-      res.status(201).json(newTraveler);
+      
+      res.status(201).json({success: true, message: 'Traveler Successfully Created', newTraveler});
     }
   } catch (error) {
     console.log(error);
-    res.status(501).json({ message: 'serverError' });
+    res.status(501).json({success: false, message: 'Traveler Not Created' });
   }
 };
 
-// export const updateTraveler = async (req, res, next) => {
-//   try {
-//     const updateTraveler = await Traveler.findByIdAndUpdate(
-//       req.params.id,
-//       req.body,
-//       { new: true }
-//     );
-//     res.json(updateTraveler);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(501).json({ message: 'user not updated' });
-//   }
-// };
 
 export const deleteTraveler = async (req, res, next) => {
   const { userId } = req.params;
@@ -55,10 +42,10 @@ export const deleteTraveler = async (req, res, next) => {
     await User.findByIdAndUpdate(deleteTraveler.userId, {
       $pull: { travelers: deleteTraveler._id },
     });
-    res.json(deleteTraveler);
+    res.json({success: true, message: "Traveler Delete SuccessFully", deleteTraveler});
   } catch (error) {
     console.log(error);
-    res.status(501).json({ message: 'user not deleted' });
+    res.status(501).json({success: false, message: 'user not deleted' });
   }
 };
 
@@ -69,7 +56,7 @@ export const getAllTravelersByUserId = async (req, res, next) => {
     console.log('userId',userId)
     const travelers = await Traveler.find({ userId: userId });
     console.log('traveler',travelers)
-    res.json(travelers);
+    res.json({ success: true, message: 'Travelers retrieved', travelers });
   } catch (error) {
     console.log(error);
     res.status(500).json({ message: 'Server Error' });
