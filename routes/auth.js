@@ -15,7 +15,7 @@ router.post('/change-password',  changePassword);
 
 const loginUserSuccessRoute = (req, res, user) => {
   try {
-    console.log(req.user)
+    // console.log(req.user)
     const userJSON = JSON.stringify(user);
     const encodedUser = encodeURIComponent(userJSON);
     console.log('Redirecting to:', `${SUCCESS_URL}?user=${encodedUser}`);
@@ -103,7 +103,7 @@ router.post('/login/success', async (req, res) => {
 
     // // console.log('Parsed user:', sessionUser);
     // const sessionUser = await req.body.user
-    const sessionUser = await req.session
+    const sessionUser = await req.session.passport
 console.log('user', sessionUser)
     if (!sessionUser) {
       return res.status(401).json({
