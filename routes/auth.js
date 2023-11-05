@@ -20,7 +20,8 @@ const loginUserSuccessRoute = (req, res, user) => {
     const encodedUser = encodeURIComponent(userJSON);
     // Authentication succeeded, now pass the user to the /login/success route handler
     // return res.redirect(`${SUCCESS_URL}?user=${JSON.stringify(user)}`);
-    return res.redirect(`${SUCCESS_URL}?user=${encodedUser}`);
+    console.log('Redirecting to:', `${SUCCESS_URL}?user=${encodedUser}`);
+return res.redirect(`${SUCCESS_URL}?user=${encodedUser}`);
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
