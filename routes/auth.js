@@ -103,8 +103,10 @@ router.post('/login/success', async (req, res) => {
 
     // // console.log('Parsed user:', sessionUser);
     // const sessionUser = await req.body.user
-    const sessionUser = await req.session.passport
-console.log('user', sessionUser)
+    const passportUser = await req.session.passport
+    const sessionUser = await req.session.user
+console.log('passportuser', passportUser)
+console.log('sessionuser', sessionUser)
     if (!sessionUser) {
       return res.status(401).json({
         success: false,
