@@ -97,9 +97,10 @@ router.get('/google/callback', (req, res, next) => {
 
 router.get('/login/success', async (req, res) => {
   try {
-    // Use the user data stored in the session
-    // const sessionUser = await req.session.user;
-    const sessionUser = JSON.parse(req.query.user);
+    const userParam = req.query.user; // Log the raw query parameter
+    console.log('Raw user parameter:', userParam);
+    const sessionUser = JSON.parse(userParam);
+    console.log('Parsed user:', sessionUser);
 console.log('user', sessionUser)
     if (!sessionUser) {
       return res.status(401).json({
