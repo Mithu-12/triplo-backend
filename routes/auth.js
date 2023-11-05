@@ -18,8 +18,6 @@ const loginUserSuccessRoute = (req, res, user) => {
     console.log(req.user)
     const userJSON = JSON.stringify(user);
     const encodedUser = encodeURIComponent(userJSON);
-    // Authentication succeeded, now pass the user to the /login/success route handler
-    // return res.redirect(`${SUCCESS_URL}?user=${JSON.stringify(user)}`);
     console.log('Redirecting to:', `${SUCCESS_URL}?user=${encodedUser}`);
 return res.redirect(`${SUCCESS_URL}?user=${encodedUser}`);
   } catch (error) {
@@ -98,11 +96,12 @@ router.get('/google/callback', (req, res, next) => {
 
 router.get('/login/success', async (req, res) => {
   try {
-    const userJSON = decodeURIComponent(req.query.user);
-    console.log('Raw user parameter:', userJSON);
-    const sessionUser = JSON.parse(userJSON);
+    // const userJSON = decodeURIComponent(req.query.user);
+    // console.log('Raw user parameter:', userJSON);
+    // const sessionUser = JSON.parse(userJSON);
 
-    console.log('Parsed user:', sessionUser);
+    // console.log('Parsed user:', sessionUser);
+    const sessionUser = req.body
 console.log('user', sessionUser)
     if (!sessionUser) {
       return res.status(401).json({
