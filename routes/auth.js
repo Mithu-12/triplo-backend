@@ -13,11 +13,23 @@ router.post('/register', register);
 router.post('/login', login);
 router.post('/change-password',  changePassword);
 
+const loginUserSuccessRoute = (req, res, user) => {
+  try {
+    // Authentication succeeded, now pass the user to the /login/success route handler
+    return res.redirect(`${SUCCESS_URL}?user=${JSON.stringify(user)}`);
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+};
+
+
 
 router.get('/login/success', async (req, res) => {
   try {
     // Use the user data stored in the session
-    const sessionUser = await req.session.user;
+    // const sessionUser = await req.session.user;
+    const sessionUser = JSON.parse(req.query.user);
 console.log('user', sessionUser)
     if (!sessionUser) {
       return res.status(401).json({
@@ -97,9 +109,10 @@ router.get('/google/callback', (req, res, next) => {
         req.session.user = user; // This will make the user data available in the session
         const sessionUser = req.session.user;
         console.log('User data in session:', sessionUser);
-
+        
         // Redirect to a success URL or send a response
-        return res.redirect(SUCCESS_URL);
+        // return res.redirect(SUCCESS_URL);
+        return loginUserSuccessRoute(req, res, user);
       });
     } catch (error) {
       console.error('Error:', error);
