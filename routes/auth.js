@@ -101,7 +101,7 @@ router.get('/login/success', async (req, res) => {
     // const sessionUser = JSON.parse(userJSON);
 
     // console.log('Parsed user:', sessionUser);
-    const sessionUser = req.user
+    const sessionUser = req.body.user
 console.log('user', sessionUser)
     if (!sessionUser) {
       return res.status(401).json({
