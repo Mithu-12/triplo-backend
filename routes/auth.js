@@ -94,14 +94,14 @@ router.get('/google/callback', (req, res, next) => {
 
 
 
-router.get('/login/success', async (req, res) => {
+router.post('/login/success', async (req, res) => {
   try {
     // const userJSON = decodeURIComponent(req.query.user);
     // console.log('Raw user parameter:', userJSON);
     // const sessionUser = JSON.parse(userJSON);
 
     // console.log('Parsed user:', sessionUser);
-    const sessionUser = req.body.user
+    const sessionUser = await req.body.user
 console.log('user', sessionUser)
     if (!sessionUser) {
       return res.status(401).json({
