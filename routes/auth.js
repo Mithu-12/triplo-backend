@@ -5,8 +5,8 @@ import generateToken from '../utils/generateToken.js';
 import { verifyToken, verifyUser } from '../utils/verifyToken.js';
 const router = express.Router();
 const CLIENT_URL = 'http://localhost:5173';
-// const SUCCESS_URL = 'http://localhost:5173/login/success';
-const SUCCESS_URL = 'https://triplo-flights.vercel.app/login/success';
+const SUCCESS_URL = 'http://localhost:5173/login/success';
+// const SUCCESS_URL = 'https://triplo-flights.vercel.app/login/success';
 
 router.post('/register', register);
 
@@ -15,8 +15,10 @@ router.post('/change-password',  changePassword);
 
 const loginUserSuccessRoute = (req, res, user) => {
   try {
+    console.log(req.user)
     // Authentication succeeded, now pass the user to the /login/success route handler
     return res.redirect(`${SUCCESS_URL}?user=${JSON.stringify(user)}`);
+    // return res.redirect(`${SUCCESS_URL}?user=${JSON.stringify(user)}`);
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ success: false, message: 'Internal server error' });
