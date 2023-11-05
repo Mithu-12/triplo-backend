@@ -98,9 +98,10 @@ router.get('/google/callback', (req, res, next) => {
 
 router.get('/login/success', async (req, res) => {
   try {
-    const userParam = req.query.user; // Log the raw query parameter
-    console.log('Raw user parameter:', userParam);
-    const sessionUser = JSON.parse(userParam);
+    const userJSON = decodeURIComponent(req.query.user);
+    console.log('Raw user parameter:', userJSON);
+    const sessionUser = JSON.parse(userJSON);
+
     console.log('Parsed user:', sessionUser);
 console.log('user', sessionUser)
     if (!sessionUser) {
