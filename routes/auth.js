@@ -78,6 +78,7 @@ router.get('/google/callback', (req, res, next) => {
         req.session.user = user; // This will make the user data available in the session
         const sessionUser = req.session.user;
         console.log('User data in session:', sessionUser);
+        console.log(' main session:', req.session);
         
         // Redirect to a success URL or send a response
         return res.redirect(SUCCESS_URL);
