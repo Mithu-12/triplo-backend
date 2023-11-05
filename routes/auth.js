@@ -27,41 +27,7 @@ const loginUserSuccessRoute = (req, res, user) => {
 
 
 
-router.get('/login/success', async (req, res) => {
-  try {
-    // Use the user data stored in the session
-    // const sessionUser = await req.session.user;
-    const sessionUser = JSON.parse(req.query.user);
-console.log('user', sessionUser)
-    if (!sessionUser) {
-      return res.status(401).json({
-        success: false,
-        message: 'Unauthorized',
-      });
-    }
 
-    // Generate an access token (JWT)
-    const token = generateToken(sessionUser._id);
-
-    // Set the access token as a cookie
-    res.cookie('access_token', token, { httpOnly: true });
-
-    // Send the access token and user in the response
-    res.status(200).json({
-      success: true,
-      message: 'success',
-      access_token: token,
-      user: sessionUser,
-    });
-  } catch (error) {
-    // Handle any errors that occur during this process
-    console.error('Error:', error);
-    res.status(500).json({
-      success: false,
-      message: 'Internal server error',
-    });
-  }
-});
 
 router.get('/login/failed', (req, res) => {
   res.status(401).json({
@@ -125,6 +91,43 @@ router.get('/google/callback', (req, res, next) => {
   })(req, res, next);
 });
 
+
+
+router.get('/login/success', async (req, res) => {
+  try {
+    // Use the user data stored in the session
+    // const sessionUser = await req.session.user;
+    const sessionUser = JSON.parse(req.query.user);
+console.log('user', sessionUser)
+    if (!sessionUser) {
+      return res.status(401).json({
+        success: false,
+        message: 'Unauthorized',
+      });
+    }
+
+    // Generate an access token (JWT)
+    const token = generateToken(sessionUser._id);
+
+    // Set the access token as a cookie
+    res.cookie('access_token', token, { httpOnly: true });
+
+    // Send the access token and user in the response
+    res.status(200).json({
+      success: true,
+      message: 'success',
+      access_token: token,
+      user: sessionUser,
+    });
+  } catch (error) {
+    // Handle any errors that occur during this process
+    console.error('Error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Internal server error',
+    });
+  }
+});
 
 // router.get(
 //   '/facebook',
