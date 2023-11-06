@@ -91,7 +91,7 @@ export const forgotPassword = async (req, res, next) => {
       }
     });
     // const token = generateToken(user._id)
-    const token = jwt.sign({ id: newUser._id }, 'asdfasdfasdfsdetyerty', {
+    const token = jwt.sign({ id: user._id }, 'asdfasdfasdfsdetyerty', {
       expiresIn: '1d',
     });
     const mailOptions = {
