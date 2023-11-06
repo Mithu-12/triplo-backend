@@ -95,7 +95,7 @@ export const forgotPassword = async (req, res, next) => {
       from: 'mithuvowmick96@gmail.com',
       to: user.email,
       subject: 'Reset Your Password',
-      text: `http://localhost:5173/reset-password/${user._id}/${token}`
+      text: `https://triplo-flights.vercel.app/reset-password/${user._id}/${token}`
     };
     
     transporter.sendMail(mailOptions, function(error, info){
