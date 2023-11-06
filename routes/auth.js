@@ -1,6 +1,6 @@
 import express from 'express';
 import passport from 'passport';
-import { changePassword, login, register } from '../controller/auth.js';
+import { changePassword, forgotPassword, login, register, resetPassword } from '../controller/auth.js';
 import generateToken from '../utils/generateToken.js';
 import { verifyToken, verifyUser } from '../utils/verifyToken.js';
 const router = express.Router();
@@ -12,6 +12,8 @@ router.post('/register', register);
 
 router.post('/login', login);
 router.post('/change-password',  changePassword);
+router.post('/forgot-password', forgotPassword)
+router.post('/reset-password/:id/:token', resetPassword)
 
 const loginUserSuccessRoute = (req, res, user) => {
   try {

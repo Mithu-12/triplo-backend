@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 import bcrypt from 'bcryptjs';
 import generateToken from '../utils/generateToken.js';
+import nodemailer from 'nodemailer'
 
 export const register = async (req, res, next) => {
   try {
@@ -66,6 +67,70 @@ export const login = async (req, res, next) => {
     next(error);
   }
 };
+
+
+
+
+export const forgotPassword = async (req, res, next) => {
+  try {
+    const { email } = req.body;
+
+    const user = await User.findOne({ email: email});
+
+    if (!user) {
+      return res
+        .status(401)
+        .json({ message: 'Email is not exist' });
+    }
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'mithuvowmick96@gmail.com',
+        pass: 'yogw uqyg aqwu lpzr'
+      }
+    });
+    const token = generateToken(user._id)
+    const mailOptions = {
+      from: 'mithuvowmick96@gmail.com',
+      to: user.email,
+      subject: 'Reset Your Password',
+      text: `http://localhost:5173/reset-password/${user._id}/${token}`
+    };
+    
+    transporter.sendMail(mailOptions, function(error, info){
+      if (error) {
+       return res.status(401).json({message: "Email not send"})
+        console.log(error);
+      } else {
+        return res.send({status: "success"})
+      }
+    });
+
+  } catch (error) {
+    next(error);
+  }
+};
+
+
+export const resetPassword = async(req, res)=>{
+  const {id, token} = req.params;
+  const {password} = req.body;
+
+  jwt.verify(token, process.env.jwt, async(err, decoded) =>{
+    if(err){
+      return res.status(401).json({ message: 'User unauthorized or token expired' });
+    }else{
+      const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(password, salt);
+   await User.findByIdAndUpdate({_id: id}, {password: hash})
+  return res.send({status: 'success'})
+    }
+  })
+
+
+}
+
 
 export const changePassword = async (req, res, next) => {
   try {
