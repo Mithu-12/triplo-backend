@@ -90,7 +90,10 @@ export const forgotPassword = async (req, res, next) => {
         pass: 'yogw uqyg aqwu lpzr'
       }
     });
-    const token = generateToken(user._id)
+    // const token = generateToken(user._id)
+    const token = jwt.sign({ id: newUser._id }, 'asdfasdfasdfsdetyerty', {
+      expiresIn: '1d',
+    });
     const mailOptions = {
       from: 'mithuvowmick96@gmail.com',
       to: user.email,
