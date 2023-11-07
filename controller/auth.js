@@ -119,7 +119,6 @@ export const forgotPassword = async (req, res, next) => {
 export const resetPassword = async(req, res)=>{
   const {id, token} = req.params;
   const {password} = req.body;
-console.log('token', token)
 const decoded = jwt.decode(token);
 console.log(decoded);
   jwt.verify(token, 'asdfasdfasdfsdetyerty', async(err, decoded) =>{
