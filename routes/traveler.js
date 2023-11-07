@@ -9,13 +9,13 @@ import { verifyToken } from '../utils/verifyToken.js';
 
 const router = express.Router();
 
-router.post('/', verifyToken, addTravelers);
+router.post('/',  addTravelers);
 
 // router.put('/:id', updateTraveler);
 
 router.delete('/:id', deleteTraveler);
 
-router.get('/:userId', verifyToken, getAllTravelersByUserId)
+router.get('/:userId',  getAllTravelersByUserId)
 
 
 export default router;
