@@ -91,7 +91,7 @@ export const forgotPassword = async (req, res, next) => {
       }
     });
     // const token = generateToken(user._id)
-    const token = jwt.sign({ id: user._id }, 'asdfasdfasdfsdetyerty', {
+    const token = jwt.sign({ id: user._id }, process.env.JWT, {
       expiresIn: '1d',
     });
     const mailOptions = {
@@ -119,9 +119,10 @@ export const forgotPassword = async (req, res, next) => {
 export const resetPassword = async(req, res)=>{
   const {id, token} = req.params;
   const {password} = req.body;
+
 const decoded = jwt.decode(token);
 console.log(decoded);
-  jwt.verify(token, 'asdfasdfasdfsdetyerty', async(err, decoded) =>{
+  jwt.verify(token, process.env.JWT, async(err, decoded) =>{
     if(err){
       return res.status(401).json({ message: 'User unauthorized or token expired' });
     }else{
