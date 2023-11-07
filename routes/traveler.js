@@ -5,16 +5,17 @@ import {
   getAllTravelersByUserId,
   // updateTraveler,
 } from '../controller/traveler.js';
+import { verifyToken } from '../utils/verifyToken.js';
 
 const router = express.Router();
 
-router.post('/', addTravelers);
+router.post('/', verifyToken, addTravelers);
 
 // router.put('/:id', updateTraveler);
 
 router.delete('/:id', deleteTraveler);
 
-router.get('/:userId', getAllTravelersByUserId)
+router.get('/:userId', verifyToken, getAllTravelersByUserId)
 
 
 export default router;
