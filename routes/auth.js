@@ -11,8 +11,8 @@ const SUCCESS_URL = 'https://triplo-flights.vercel.app/login/success';
 router.post('/register', register);
 
 router.post('/login', login);
-router.post('/change-password',  changePassword);
-router.post('/forgot-password', forgotPassword)
+router.post('/change-password', verifyToken,  changePassword);
+router.post('/forgot-password',  forgotPassword)
 router.post('/reset-password/:id/:token', resetPassword)
 
 const loginUserSuccessRoute = (req, res, user) => {
