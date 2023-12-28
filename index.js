@@ -53,7 +53,11 @@ app.use(passport.session());
 // Logging for MongoDB connection
 const connect = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB);
+    await mongoose.connect(process.env.MONGODB, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      useFindAndModify: false,
+    });
     console.log('Connected to MongoDB');
   } catch (error) {
     console.error('Error connecting to MongoDB:', error);
@@ -64,10 +68,14 @@ mongoose.set('debug', true);
 mongoose.connection.on('disconnected', () => {
   console.log('MongoDB disconnected');
 });
+
 mongoose.connection.on('connected', () => {
   console.log('MongoDB connected');
 });
 
+mongoose.connection.on('error', (error) => {
+  console.error('MongoDB connection error:', error);
+});
 
 
 

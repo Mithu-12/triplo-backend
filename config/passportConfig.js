@@ -1,9 +1,7 @@
-import passport from 'passport';
-import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
+import passport from "passport";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 // import { Strategy as FacebookStrategy } from 'passport-facebook';
-import User from '../models/User.js';
-
-
+import User from "../models/User.js";
 
 passport.use(
   new GoogleStrategy(
@@ -11,11 +9,11 @@ passport.use(
       // Google OAuth2 credentials
       clientID: process.env.GOOGLE_CLIENT_API_KEY,
       clientSecret: process.env.GOOGLE_SECRET_API_KEY,
-      callbackURL: 'https://triplo-flight.onrender.com/api/auth/google/callback',
-      
+      callbackURL:
+        "https://tame-leggings-goat.cyclic.app/api/auth/google/callback",
     },
     async (req, accessToken, refreshToken, profile, done) => {
-      console.log('Google OAuth2 strategy called');
+      console.log("Google OAuth2 strategy called");
       try {
         // Check if the user already exists in database
         let user = await User.findOne({ googleId: profile.id });
@@ -30,13 +28,12 @@ passport.use(
             userName: profile.emails[0].value,
           });
         }
-       
 
         // Call done with null for the error and the user object
         return done(null, user);
       } catch (error) {
         // Call done with the error object and false for the user
-        console.log('new error', error)
+        console.log("new error", error);
         return done(error, false);
       }
     }
@@ -49,7 +46,7 @@ passport.use(
 //     {
 //       clientID: process.env.FACEBOOK_CLIENT_API_KEY,
 //       clientSecret: process.env.FACEBOOK_SECRET_API_KEY,
-//       callbackURL: 'https://triplo-flight.onrender.com/api/auth/facebook/callback',
+//       callbackURL: 'https://tame-leggings-goat.cyclic.app/api/auth/facebook/callback',
 //     },
 //     async (accessToken, refreshToken, profile, done) => {
 //       try {
@@ -71,8 +68,6 @@ passport.use(
 //   )
 // );
 
-
-
 passport.serializeUser((user, done) => {
   done(null, user);
 });
@@ -80,16 +75,3 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser((user, done) => {
   done(null, user);
 });
-
-
-
-
-
-
-
-
-
-
-
-
-

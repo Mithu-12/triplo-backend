@@ -1,7 +1,7 @@
-import express from 'express';
-import { ObjectId } from 'mongodb';
-import SSLCommerzPayment from 'sslcommerz-lts';
-import Payment from '../models/Payment.js';
+import express from "express";
+import { ObjectId } from "mongodb";
+import SSLCommerzPayment from "sslcommerz-lts";
+import Payment from "../models/Payment.js";
 // import mongoose from 'mongoose';
 // import ObjectId from 'mongoose'
 
@@ -14,7 +14,7 @@ const store_id = process.env.SSLCOMMERZ_CLIENT_API_KEY;
 const store_passwd = process.env.SSLCOMMERZ_SECRET_API_KEY;
 const is_live = false;
 
-router.post('/payment-process/:paymentOption', async (req, res) => {
+router.post("/payment-process/:paymentOption", async (req, res) => {
   const {
     paymentOption,
     price,
@@ -31,33 +31,33 @@ router.post('/payment-process/:paymentOption', async (req, res) => {
   try {
     const data = {
       total_amount: price,
-      currency: 'BDT',
+      currency: "BDT",
       tran_id: tran_id, // use unique tran_id for each api call
-      success_url: `https://triplo-flight.onrender.com/api/payment/success/${tran_id}`,
-      fail_url: `https://triplo-flight.onrender.com/api/payment/failed/${tran_id}`,
-      cancel_url: `https://triplo-flight.onrender.com/api/payment/cancel/${tran_id}`,
-      ipn_url: 'http://localhost:3030/ipn',
-      shipping_method: 'Courier',
+      success_url: `https://tame-leggings-goat.cyclic.app/api/payment/success/${tran_id}`,
+      fail_url: `https://tame-leggings-goat.cyclic.app/api/payment/failed/${tran_id}`,
+      cancel_url: `https://tame-leggings-goat.cyclic.app/api/payment/cancel/${tran_id}`,
+      ipn_url: "http://localhost:3030/ipn",
+      shipping_method: "Courier",
       product_name: paymentType,
-      product_category: 'Electronic',
-      product_profile: 'general',
+      product_category: "Electronic",
+      product_profile: "general",
       cus_name: firstName,
       cus_email: email,
-      cus_add1: 'hello',
-      cus_add2: 'Dhaka',
-      cus_city: 'Dhaka',
-      cus_state: 'Dhaka',
-      cus_postcode: '1000',
-      cus_country: 'Bangladesh',
-      cus_phone: '01711111111',
-      cus_fax: '01711111111',
-      ship_name: 'Customer Name',
-      ship_add1: 'Dhaka',
-      ship_add2: 'Dhaka',
-      ship_city: 'Dhaka',
-      ship_state: 'Dhaka',
+      cus_add1: "hello",
+      cus_add2: "Dhaka",
+      cus_city: "Dhaka",
+      cus_state: "Dhaka",
+      cus_postcode: "1000",
+      cus_country: "Bangladesh",
+      cus_phone: "01711111111",
+      cus_fax: "01711111111",
+      ship_name: "Customer Name",
+      ship_add1: "Dhaka",
+      ship_add2: "Dhaka",
+      ship_city: "Dhaka",
+      ship_state: "Dhaka",
       ship_postcode: 1000,
-      ship_country: 'Bangladesh',
+      ship_country: "Bangladesh",
     };
     // console.log(data)
     try {
@@ -67,7 +67,7 @@ router.post('/payment-process/:paymentOption', async (req, res) => {
         // console.log('apiResponse',apiResponse)
         let GatewayPageURL = apiResponse.GatewayPageURL;
         res.send({ url: GatewayPageURL });
-        console.log('Redirecting to: ', GatewayPageURL);
+        console.log("Redirecting to: ", GatewayPageURL);
         const finalOrder = new Payment({
           productData: productData,
           travelersData: req.body,
@@ -81,14 +81,14 @@ router.post('/payment-process/:paymentOption', async (req, res) => {
         });
         await finalOrder.save();
       });
-      router.post('/success/:tranId', async (req, res) => {
+      router.post("/success/:tranId", async (req, res) => {
         const paymentUpdate = await Payment.updateOne(
           {
             tranId: req.params.tranId,
           },
           {
             $set: {
-              paymentStatus: 'success',
+              paymentStatus: "success",
             },
           }
         );
@@ -98,14 +98,14 @@ router.post('/payment-process/:paymentOption', async (req, res) => {
           );
         }
       });
-      router.post('/failed/:tranId', async (req, res) => {
+      router.post("/failed/:tranId", async (req, res) => {
         const paymentUpdate = await Payment.updateOne(
           {
             tranId: req.params.tranId,
           },
           {
             $set: {
-              paymentStatus: 'failed',
+              paymentStatus: "failed",
             },
           }
         );
@@ -115,14 +115,14 @@ router.post('/payment-process/:paymentOption', async (req, res) => {
           );
         }
       });
-      router.post('/cancel/:tranId', async (req, res) => {
+      router.post("/cancel/:tranId", async (req, res) => {
         const paymentUpdate = await Payment.updateOne(
           {
             tranId: req.params.tranId,
           },
           {
             $set: {
-              paymentStatus: 'cancel',
+              paymentStatus: "cancel",
             },
           }
         );
@@ -133,34 +133,34 @@ router.post('/payment-process/:paymentOption', async (req, res) => {
         }
       });
     } catch (error) {
-      console.error('Error during SSLCommerzPayment initialization:', error);
+      console.error("Error during SSLCommerzPayment initialization:", error);
       res
         .status(500)
-        .json({ error: 'An error occurred during payment processing' });
+        .json({ error: "An error occurred during payment processing" });
     }
   } catch (error) {
-    console.error('Error:', error);
+    console.error("Error:", error);
     res
       .status(500)
-      .json({ error: 'An error occurred during payment processing' });
+      .json({ error: "An error occurred during payment processing" });
   }
 });
 
 // Backend route to fetch payment data based on userId and serviceType
-router.get('/:userId/:serviceType', async (req, res) => {
+router.get("/:userId/:serviceType", async (req, res) => {
   const userId = req.params.userId;
   const serviceType = req.params.serviceType;
-  console.log('userId, serviceType', userId, serviceType);
+  console.log("userId, serviceType", userId, serviceType);
   try {
     // Fetch payment data for the specified userId and serviceType
     const payments = await Payment.find({ userId, serviceType });
-    console.log('payments', payments);
+    console.log("payments", payments);
     res.json(payments);
   } catch (error) {
-    console.error('Error fetching payment data:', error);
+    console.error("Error fetching payment data:", error);
     res
       .status(500)
-      .json({ error: 'An error occurred while fetching payment data' });
+      .json({ error: "An error occurred while fetching payment data" });
   }
 });
 
@@ -190,9 +190,9 @@ export default router;
 //       total_amount: order.price,
 //       currency: 'BDT',
 //       tran_id: tran_id, // use unique tran_id for each api call
-//       success_url: `https://triplo-flight.onrender.com/api/payment/success/${tran_id}`,
-//       fail_url: `https://triplo-flight.onrender.com/api/payment/failed/${tran_id}`,
-//       cancel_url: `https://triplo-flight.onrender.com/api/payment/cancel/${tran_id}`,
+//       success_url: `https://tame-leggings-goat.cyclic.app/api/payment/success/${tran_id}`,
+//       fail_url: `https://tame-leggings-goat.cyclic.app/api/payment/failed/${tran_id}`,
+//       cancel_url: `https://tame-leggings-goat.cyclic.app/api/payment/cancel/${tran_id}`,
 //       ipn_url: 'http://localhost:3030/ipn',
 //       shipping_method: 'Courier',
 //       product_name: order?.paymentType,
