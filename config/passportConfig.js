@@ -10,7 +10,7 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_API_KEY,
       clientSecret: process.env.GOOGLE_SECRET_API_KEY,
       callbackURL:
-        "https://tame-leggings-goat.cyclic.app/api/auth/google/callback",
+        "https://triplo-backend.up.railway.app/api/auth/google/callback",
     },
     async (req, accessToken, refreshToken, profile, done) => {
       console.log("Google OAuth2 strategy called");
@@ -46,7 +46,7 @@ passport.use(
 //     {
 //       clientID: process.env.FACEBOOK_CLIENT_API_KEY,
 //       clientSecret: process.env.FACEBOOK_SECRET_API_KEY,
-//       callbackURL: 'https://tame-leggings-goat.cyclic.app/api/auth/facebook/callback',
+//       callbackURL: 'https://triplo-backend.up.railway.app/api/auth/facebook/callback',
 //     },
 //     async (accessToken, refreshToken, profile, done) => {
 //       try {
