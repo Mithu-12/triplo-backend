@@ -129,12 +129,12 @@
 //   });
 // });
 
-// // Root route
+
 // app.get('/', (req, res) => {
 //   res.send('Hello, this is the root route!');
 // });
 
-// // Start the server
+
 // app.listen(8800, () => {
 //   connect();
 //   console.log('Backend is connected');
