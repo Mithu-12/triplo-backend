@@ -4,7 +4,7 @@ import { changePassword, forgotPassword, login, register, resetPassword } from '
 import generateToken from '../utils/generateToken.js';
 import { verifyToken, verifyUser } from '../utils/verifyToken.js';
 const router = express.Router();
-const CLIENT_URL = 'http://localhost:5173';
+// const CLIENT_URL = 'http://localhost:5173';
 // const SUCCESS_URL = 'http://localhost:5173/login/success';
 const SUCCESS_URL = 'https://triplo-flights.vercel.app/login/success';
 
